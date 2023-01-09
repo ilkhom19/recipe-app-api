@@ -85,7 +85,7 @@ class PublicUserApiTests(TestCase):
 
     def test_create_token_bad_credentials(self):
         """Test returns error if credentials invalid."""
-        create_user(email = 'test@example.com', password = 'simple-pass123')
+        create_user(email='test@example.com', password='simple-pass123')
 
         payload = {'email': 'test@example.com', 'password': 'badpass'}
         res = self.client.post(TOKEN_URL, payload)
@@ -108,13 +108,14 @@ class PublicUserApiTests(TestCase):
 
         self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
 
+
 class PrivateUserApiTest(TestCase):
     """Test API requests that require authentication."""
     def setUp(self):
         self.user = create_user(
             email='test@example.com',
             password='simple-pass123',
-            name = 'Test Name',
+            name='Test Name',
         )
 
         self.client = APIClient()
@@ -140,7 +141,7 @@ class PrivateUserApiTest(TestCase):
         """Test updating the user profile for the authenticated users."""
         payload = {'name': 'Updated Name', 'password': 'newpass123'}
 
-        res = self.client.patch(ME_URL,payload)
+        res = self.client.patch(ME_URL, payload)
 
         self.user.refresh_from_db()
         self.assertEqual(self.user.name, payload['name'])
