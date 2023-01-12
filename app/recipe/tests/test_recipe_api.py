@@ -414,7 +414,7 @@ class PrivateRecipeApiTests(TestCase):
         rec3 = create_recipe(user=self.user, title='Fish')
 
         params = {'tags': f'{tag1.id},{tag2.id}'}
-        res = self.client.get(RECIPE_URL,params)
+        res = self.client.get(RECIPE_URL, params)
 
         s1 = RecipeSerializer(rec1)
         s2 = RecipeSerializer(rec2)
