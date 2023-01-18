@@ -1,5 +1,4 @@
-# Recipe App Api
-Backend built with DRF
+# Recipe App Api [Online Docs](http://52.198.226.89/api/docs)
 
 ## Technologies used
 * [Django](https://www.djangoproject.com/): The web framework that builds better web APIs with less code.
