@@ -6,7 +6,6 @@ from .serializers import EmailSerializer
 
 import os
 import threading
-from threading import Thread
 
 
 class EmailThread(threading.Thread):
