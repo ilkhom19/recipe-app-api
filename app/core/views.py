@@ -1,8 +1,13 @@
+import hashlib
+from random import randint
+
+from django.contrib.sites import requests
 from django.core.mail import send_mail
 from rest_framework import status, mixins
+from rest_framework.decorators import api_view
 from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
-from .serializers import EmailSerializer
+from .serializers import EmailSerializer, TargetMail
 
 import os
 import threading
@@ -48,3 +53,19 @@ class MailerView(mixins.CreateModelMixin, GenericAPIView):
 
     def post(self, request, *args, **kwargs):
         return self.create(request, *args, **kwargs)
+
+
+@api_view(['POST'])
+def sendMail(request):
+    targetMail=TargetMail(data=request.data)
+
+    if targetMail.is_valid():
+        address = targetMail.data['email']
+        password = f'{randint(1000,9999)}'
+        salt = "sugar"
+        hashed_password = hashlib.sha512(password.encode('utf-8') + salt.encode('utf-8')).hexdigest()
+
+        send_async_mail(subject='Book a Room Email Verification', body=f'Your Secret code is: {password}', recipient_list=address)
+
+        return Response([address, hashed_password], status=status.HTTP_200_OK)
+    else: return Response(targetMail.errors)
